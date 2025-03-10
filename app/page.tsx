@@ -9,7 +9,7 @@ import {
   testimonials,
   stats,
   partners,
-  pricingPlans,
+  // pricingPlans,
   partnersContent,
 } from "@/lib/constants";
 import { content, illustrations } from "@/lib/content";
@@ -633,7 +633,10 @@ export default function Home() {
         </section>
 
         {/* Services Section */}
-        <section ref={servicesRef} className="py-24 relative overflow-hidden px-4">
+        <section
+          ref={servicesRef}
+          className="py-24 relative overflow-hidden px-4"
+        >
           <motion.div
             className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"
             initial={{ opacity: 0 }}
