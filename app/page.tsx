@@ -31,11 +31,13 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
+// Removed MixBlendMode import as it does not exist in "framer-motion"
+import { Variants } from "framer-motion";
 
 const useMouseTilt = () => {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     const element = e.currentTarget;
     const rect = element.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -82,7 +84,7 @@ const cardVariants = {
 
 const fadeInUpVariant = {
   hidden: { opacity: 0, y: 30 },
-  visible: (i) => ({
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
@@ -166,7 +168,7 @@ const CustomCursor = () => {
   const [cursorVariant, setCursorVariant] = useState("default");
 
   useEffect(() => {
-    const mouseMove = (e) => {
+    const mouseMove = (e: { clientX: any; clientY: any }) => {
       setMousePosition({
         x: e.clientX,
         y: e.clientY,
@@ -204,6 +206,30 @@ const CustomCursor = () => {
     },
   };
 
+  // const variants: Variants = {
+  //   default: {
+  //     x: mousePosition.x - 16,
+  //     y: mousePosition.y - 16,
+  //     backgroundColor: "rgba(var(--primary-rgb), 0.3)",
+  //   },
+  //   button: {
+  //     x: mousePosition.x - 32,
+  //     y: mousePosition.y - 32,
+  //     height: 64,
+  //     width: 64,
+  //     backgroundColor: "rgba(var(--primary-rgb), 0.2)",
+  //     mixBlendMode: "difference",
+  //   },
+  //   text: {
+  //     x: mousePosition.x - 24,
+  //     y: mousePosition.y - 24,
+  //     height: 48,
+  //     width: 48,
+  //     backgroundColor: "rgba(var(--primary-rgb), 0.1)",
+  //     mixBlendMode: "difference",
+  //   },
+  // };
+
   useEffect(() => {
     const handleButtonHover = () => setCursorVariant("button");
     const handleTextHover = () => setCursorVariant("text");
@@ -239,7 +265,7 @@ const CustomCursor = () => {
   return (
     <motion.div
       className="cursor-dot fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50"
-      variants={variants}
+      variants={variants as Variants}
       animate={cursorVariant}
       transition={{
         type: "spring",
@@ -310,7 +336,15 @@ const GeometricShapes = () => {
 
 // Add this component after GeometricShapes
 
-const ShimmerText = ({ children, className = "" }) => {
+import { ReactNode } from "react";
+
+const ShimmerText = ({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <div className="relative z-10">{children}</div>
@@ -506,7 +540,7 @@ export default function Home() {
                     </motion.div>
                   </div>
                   <motion.div
-                    variants={floatAnimation}
+                    variants={floatAnimation as Variants}
                     initial="initial"
                     animate="animate"
                     className="hidden lg:block relative"
@@ -553,10 +587,12 @@ export default function Home() {
         {/* Mouse Trailer Effect */}
         <motion.div
           className="fixed hidden lg:block pointer-events-none h-96 w-96 rounded-full bg-primary/5 blur-3xl z-0"
-          animate={{
-            x: (mousePosition) => mousePosition.x - 192,
-            y: (mousePosition) => mousePosition.y - 192,
-          }}
+          animate={
+            {
+              x: (mousePosition: { x: number }) => mousePosition.x - 192,
+              y: (mousePosition: { y: number }) => mousePosition.y - 192,
+            } as any
+          }
           transition={{
             type: "spring",
             damping: 30,
@@ -666,7 +702,7 @@ export default function Home() {
               animate={servicesInView ? "visible" : "hidden"}
             >
               {services.map((service, index) => {
-                const Icon = icons[service.id];
+                const Icon = icons[service.id as keyof typeof icons];
                 return (
                   <motion.div
                     key={service.id}
@@ -786,7 +822,8 @@ export default function Home() {
                     alt="AI Demo"
                     width={800}
                     height={450}
-                    className="w-full h-full object-cover opacity-80"
+                    className="w-full h-full object-cover opacity-80" 
+                    src={""}  
                   />
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
@@ -1255,7 +1292,7 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6, duration: 0.3 }}
                     >
-                      {content.cta.ctaText}
+                      {content.cta.button}
                     </motion.span>
                     <motion.span
                       className="absolute bottom-0 left-0 h-1 bg-white/30"
