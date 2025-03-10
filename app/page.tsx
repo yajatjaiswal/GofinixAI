@@ -9,7 +9,6 @@ import {
   testimonials,
   stats,
   partners,
-  // pricingPlans,
   partnersContent,
 } from "@/lib/constants";
 import { content, illustrations } from "@/lib/content";
